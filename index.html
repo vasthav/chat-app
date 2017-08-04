@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Chat App Demo</title>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+
+<script type="text/javascript">
+	var socket = io.connect('http://localhost:8080');
+
+	socket.on('connect', function(){
+		socket.emit('adduser', prompt('Whats your name?'));
+	});
+
+	socket.on('updatechat', function(username,data){
+		$('#conversation').append('<b>'+username+' : '+data+'<br>');
+	});
+
+	 socket.on('privatechat', function(uname, data){
+	 	$('#pm').append('<b>'+uname+' : '+data+'<br>');
+	});
+
+	socket.on('updateusers', function(data) {
+		$('#users').empty();
+		$.each(data, function(key, value) {
+			$('#users').append('<div>'+key+'</div>');
+		});
+	});
+
+	$(function() {
+		$('#datasend').click(function() {
+			var message = $('#data').val();
+			$('#data').val('');
+			socket.emit('sendchat', message);
+		});
+
+		$('#data').keypress(function(e){
+			if(e.which==13) {
+				$(this).blur();
+				$('#datasend').focus().click();
+			}
+		});
+
+		$('#pmsend').click(function() {
+			var uname = $('#uname').val();
+			var pdata = $('#pdata').val();
+			$('#uname').val('');
+			$('#pdata').val('');
+			socket.emit('privatemsg', uname, pdata);
+		});
+
+		$('#pdata').keypress(function(e){
+			if(e.which==13) {
+				$(this).blur();
+				$('#pmsend').focus().click();
+			}
+		});
+	});
+
+</script>
+
+</head>
+<body>
+
+<div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;">
+	<b>USERS</b>
+	<div id="users"></div>
+</div>
+<div style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
+	<div id="conversation"></div>
+	<input id="data" style="width:200px;" />
+	<input type="button" id="datasend" value="send" />
+</div>
+
+<div style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
+	<div id="pm"></div>
+	<input id="uname" style="width:100px;" />
+	<input id="pdata" style="width:300px;" />
+	<input type="button" id="pmsend" value="send" />
+</div>
+
+</body>
+</html>
