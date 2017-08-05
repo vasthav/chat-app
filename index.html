@@ -2,28 +2,44 @@
 <html>
 <head>
 <title>Chat App Demo</title>
+
+<!-- Adding bootstrap -->
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- End Bootstrap -->
+
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 
 <script type="text/javascript">
 	var socket = io.connect('http://localhost:8080');
-
+	var myname = '';
 	socket.on('connect', function(){
-		socket.emit('adduser', prompt('Whats your name?'));
+		myname = prompt('Whats your name?')
+		socket.emit('adduser', myname);
+		$('#myname').append('I am '+ myname);
 	});
 
+	// socket.on('alert', function(username, data){
+	// 	$('#alert').append(username+' : '+data)
+	// });
+
 	socket.on('updatechat', function(username,data){
-		$('#conversation').append('<b>'+username+' : '+data+'<br>');
+		$('#conversation').append('<b class="container-fluid">'+username+' : '+data+'<br><br>');
 	});
 
 	 socket.on('privatechat', function(uname, data){
-	 	$('#pm').append('<b>'+uname+' : '+data+'<br>');
+	 	$('#pm').append('<b>'+uname+' : '+data+'<br><br>');
 	});
 
 	socket.on('updateusers', function(data) {
 		$('#users').empty();
 		$.each(data, function(key, value) {
-			$('#users').append('<div>'+key+'</div>');
+			$('#users').append('<li class="list-group-item">'+key+'</li>');
 		});
 	});
 
@@ -47,6 +63,7 @@
 			$('#uname').val('');
 			$('#pdata').val('');
 			socket.emit('privatemsg', uname, pdata);
+			$('#pm').append('<b>'+myname+' : '+pdata+'<br>');
 		});
 
 		$('#pdata').keypress(function(e){
@@ -58,26 +75,62 @@
 	});
 
 </script>
+<style>
+/*#userlist{
+    background-color: #37474f;
+}*/
+/*h3{
+	color: #ffffff;
+}*/
+
+.full-width-div {
+    position: absolute;
+    width: 100%;
+    left: 0;
+}
+
+.full-height-div {
+    position: relative;
+    height: 100%;
+    left: 0;
+}
+</style>
 
 </head>
-<body>
-
-<div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;">
-	<b>USERS</b>
-	<div id="users"></div>
-</div>
-<div style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
-	<div id="conversation"></div>
-	<input id="data" style="width:200px;" />
-	<input type="button" id="datasend" value="send" />
+<body class="container">
+<!-- 	<div class="alert alert-warning alert-dismissible" role="alert" id="alert">
+	  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	</div> -->
+<div class="container-fluid">
+	<h3>Small Talk.</h3>
 </div>
 
-<div style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
-	<div id="pm"></div>
-	<input id="uname" style="width:100px;" />
-	<input id="pdata" style="width:300px;" />
-	<input type="button" id="pmsend" value="send" />
-</div>
+<div style="width=500px; height:420px;" class="panel" style="border-style: solid;">
 
+	<div class="container-fluid row panel-body" style="background-color: #37474f;border-style: solid;">
+		<!-- <div class="col-sm-4" style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;"> -->
+		<div class="container-fluid full-height-div col-sm-4" style="background-color: #37474f;border-style: solid;" id="userlist">	
+			<span class="container-fluid" style="color: #fff;" id="myname"></span>
+			<span class="container-fluid" style="color: #fff;" >Connected Users.</span>
+			<ul id="users" class="list-group" width="250px"></ul>
+		</div>
+<!-- 	<div class="container" style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
+		<div id="conversation"></div>
+		<input id="data" style="width:200px;" />
+		<input type="button" id="datasend" value="send" />
+	</div> -->
+
+		<!-- <div class="col-sm-8" style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;"> -->
+		<div class="container col-sm-8" style="border-style: solid;background-color: #fff;">
+			<input class="containder-fluid sticky-top" id="uname" style="width:300px;" />
+			<div id="pm" class="container-fluid d-inline" style="height:300px;overflow:scroll-y;"></div>
+			<div class="container-fluid fixed-bottom" style="padding:5px">
+				<input id="pdata" style="width:600px;"/>
+				<input type="button" id="pmsend" value="send" class=".btn-success"/>
+			</div>
+		</div>
+
+	</div>
+</div>
 </body>
 </html>
