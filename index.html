@@ -2,6 +2,8 @@
 <html>
 <head>
 <title>Chat App Demo</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <!-- Adding bootstrap -->
 	<!-- Latest compiled and minified CSS -->
@@ -21,7 +23,7 @@
 	socket.on('connect', function(){
 		myname = prompt('Whats your name?')
 		socket.emit('adduser', myname);
-		$('#myname').append('I am '+ myname);
+		$('#myname').append('@'+ myname);
 	});
 
 	// socket.on('alert', function(username, data){
@@ -33,7 +35,7 @@
 	});
 
 	 socket.on('privatechat', function(uname, data){
-	 	$('#pm').append('<b>'+uname+' : '+data+'<br><br>');
+	 	$('#pm').append('<b>'+uname+' : '+data+'<br>');
 	});
 
 	socket.on('updateusers', function(data) {
@@ -58,9 +60,9 @@
 		});
 
 		$('#pmsend').click(function() {
-			var uname = $('#uname').val();
+			var uname = $('#to-user').val();
 			var pdata = $('#pdata').val();
-			$('#uname').val('');
+			$('#to-user').val('');
 			$('#pdata').val('');
 			socket.emit('privatemsg', uname, pdata);
 			$('#pm').append('<b>'+myname+' : '+pdata+'<br>');
@@ -75,64 +77,107 @@
 	});
 
 </script>
-<style>
-/*#userlist{
-    background-color: #37474f;
-}*/
-/*h3{
-	color: #ffffff;
-}*/
-
-.full-width-div {
-    position: absolute;
-    width: 100%;
-    left: 0;
+<link rel="stylesheet" type="text/css" href="style.css">
+<style type="text/css">
+body {
+	/*background-image: url('bg-img.jpg');*/
+	background-color: #F0F0F0;
+}
+#user-list{
+	background-color: #00c46c;
+	width:300px;
+	height: 480px;
+	border-radius: 10px
+}
+.list-group-item{
+	background-color: #00c46c;
 }
 
-.full-height-div {
-    position: relative;
-    height: 100%;
-    left: 0;
+#outer
+{
+	height: 500px;
+	padding: 10px;
 }
+
+#connected-users{
+/*	height: 370px;
+	overflow-y: scroll;*/
+}
+
+#user-list{
+	overflow:scroll-y;
+}
+
+#pm{
+	background-color: white;
+	height: 78%;
+	overflow:scroll-y;
+/*	margin-top: 3px;
+	margin-bottom: 3px;*/
+	border-radius: 10px;
+}
+
+#message-box{
+	/*background-color: blue;*/
+	/*width:300px;*/
+	height: 480px;
+	border-radius: 10px;
+}
+
+#to-user{
+	width:100%;
+}
+
+#submit-box{
+	margin-top: 10px;
+}
+/*#pdata{
+	width: 93%;
+}*/
+#small-talk{
+	margin: 10px;
+}
+#myname{
+	font-size: 1.5em;
+	font-weight: bold;
+	text-align: center;
+	color: white;
+	padding: 10px;
+}
+
 </style>
 
+
 </head>
-<body class="container">
-<!-- 	<div class="alert alert-warning alert-dismissible" role="alert" id="alert">
-	  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	</div> -->
-<div class="container-fluid">
-	<h3>Small Talk.</h3>
-</div>
+<body style="">
 
-<!-- <div style="width=500px; height:420px;" class="panel" style="border-style: solid;"> -->
-<div style="width=500px; height:420px;" class="panel" style="">
-<!-- 	<div class="container-fluid row panel-body" style="background-color: #37474f;border-style: solid;"> -->
-	<div class="container-fluid row panel-body" style="background-color: #37474f;">
-		<!-- <div class="col-sm-4" style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;"> -->
-		<!-- <div class="container-fluid full-height-div col-sm-4" style="background-color: #37474f;border-style: solid;" id="userlist"> --><div class="container-fluid full-height-div col-sm-4" style="background-color: #37474f;" id="userlist">
-			<span class="container-fluid" style="color: #fff;" id="myname"></span>
-			<span class="container-fluid" style="color: #fff;" >Connected Users.</span>
-			<ul id="users" class="list-group" width="250px"></ul>
+
+<!-- <div class="container" id="outer" style="background-color:black"> -->
+<div class="container" id="outer" >
+	<div id="small-talk">
+		<h3>Small Talk.</h3>
+	</div>
+	<div class="container-fluid col-sm-4" id="user-list"  >
+		<div class="container-fluid" style="" id="myname"></div>
+		<span class="container-fluid" style="" >Connected Users.</span>
+		<div id="connected-users" class="container-fluid" >
+		<ul id="users" class="list-group" width="250px" ></ul>
 		</div>
-<!-- 	<div class="container" style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
-		<div id="conversation"></div>
-		<input id="data" style="width:200px;" />
-		<input type="button" id="datasend" value="send" />
-	</div> -->
+	</div>
 
-		<!-- <div class="col-sm-8" style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;"> -->
-		<!-- <div class="container col-sm-8" style="border-style: solid;background-color: #fff;"> -->
-		<div class="container col-sm-8" style="background-color: #fff;">
-			<input class="containder-fluid sticky-top" id="uname" style="width:300px;" autocomplete="on"/>
-			<div id="pm" class="container-fluid d-inline" style="height:300px;overflow:scroll-y;"></div>
-			<div class="container-fluid fixed-bottom" style="padding:5px">
-				<input id="pdata" style="width:600px;"/>
-				<input type="button" id="pmsend" value="send" class=".btn-success"/>
+	<div class="container col-sm-8" id="message-box" style="">
+		<input class="container-fluid well well-sm" id="to-user" placeholder="Whom do you want to send?" style="" autocomplete="on"/>
+			<div id="pm" class="container-fluid" style="">
 			</div>
+		<div class="input-group col-sm-12" id="submit-box">
+		      <input type="text" class="form-control" id="pdata" placeholder="Type your message here...">
+		      <span class="input-group-btn">
+		      <button class="btn btn-default" id="pmsend" type="button">Send</button>
+		      </span>
 		</div>
 
 	</div>
+
 </div>
 </body>
 </html>
