@@ -26,24 +26,26 @@
 		$('#myname').append('@'+ myname);
 	});
 
-	// socket.on('alert', function(username, data){
-	// 	$('#alert').append(username+' : '+data)
-	// });
-
 	socket.on('updatechat', function(username,data){
 		$('#conversation').append('<b class="container-fluid">'+username+' : '+data+'<br><br>');
 	});
 
 	 socket.on('privatechat', function(uname, data){
-	 	$('#pm').append('<b>'+uname+' : '+data+'<br>');
+	 	// $('#pm').append('<b>'+uname+' : '+data+'<br>');
+	 	var userTag = '#USER-'+uname;
+	 	$(userTag).append('<b>'+uname+' : '+data+'<br>');
+	 	
 	});
 
 	socket.on('updateusers', function(data) {
 		$('#users').empty();
 		$.each(data, function(key, value) {
-			$('#users').append('<li class="list-group-item">'+key+'</li>');
+		$('#users').append('<li class="list-group-item"><a data-toggle="tab" href="#USER-'+key+'">'+key+'</li>');
+		$('#pm').append('<div id="USER-'+key+'" class="tab-pane fade"></div>');
 		});
 	});
+
+	// <li><a data-toggle="tab" href="@"+key>Menu 1</a></li>
 
 	$(function() {
 		$('#datasend').click(function() {
@@ -157,17 +159,25 @@ body {
 	<div id="small-talk">
 		<h3>Small Talk.</h3>
 	</div>
-	<div class="container-fluid col-sm-4" id="user-list"  >
+<!-- 	<div class="container-fluid col-sm-4" id="user-list"  >
 		<div class="container-fluid" style="" id="myname"></div>
 		<span class="container-fluid" style="" >Connected Users.</span>
 		<div id="connected-users" class="container-fluid" >
 		<ul id="users" class="list-group" width="250px" ></ul>
 		</div>
+	</div> -->
+
+	<div class="container-fluid col-sm-4" id="user-list"  >
+		<div class="container-fluid" style="" id="myname"></div>
+		<span class="container-fluid" style="" >Connected Users.</span>
+		<div id="connected-users" class="container-fluid" >
+		<ul id="users" class="nav nav-tabs-horizontal" width="250px" ></ul>
+		</div>
 	</div>
 
 	<div class="container col-sm-8" id="message-box" style="">
 		<input class="container-fluid well well-sm" id="to-user" placeholder="Whom do you want to send?" style="" autocomplete="on"/>
-			<div id="pm" class="container-fluid" style="">
+			<div id="pm" class="container-fluid tab-content" style="">
 			</div>
 		<div class="input-group col-sm-12" id="submit-box">
 		      <input type="text" class="form-control" id="pdata" placeholder="Type your message here...">
