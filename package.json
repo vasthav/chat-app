@@ -17,5 +17,6 @@
     "express": "^4.15.3",
     "nodemon": "^1.11.0",
     "socket.io": "^2.0.3"
-  }
+  },
+  "start": "node app.js"
 }
