@@ -16,6 +16,8 @@
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	  <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+	  <link href="https://fonts.googleapis.com/css?family=Crimson+Text" rel="stylesheet">
 <!-- End Bootstrap -->
 
 
@@ -81,8 +83,8 @@
 <link rel="stylesheet" type="text/css" href="style.css">
 <style type="text/css">
 body {
-	/*background-image: url('bg-img.jpg');*/
-	background-color: #F0F0FF;
+	background-image: url("bg-img.jpg");
+	background-color: #0d3d56;
 }
 #user-list{
 	background-color: #00c46c;
@@ -141,6 +143,10 @@ body {
 }*/
 #small-talk{
 	margin: 10px;
+	color: white;
+	padding: 5px;
+	font-size: 30px;
+	font-family: 'Pacifico', cursive;	
 }
 #myname{
 	font-size: 1.5em;
@@ -180,6 +186,25 @@ li {
     width: 300px;
     padding: 8px;
 }
+
+.shadow{
+	-webkit-box-shadow: 1px 1px 17px 0px rgba(0,0,0,0.5);
+	-moz-box-shadow: 1px 1px 17px 0px rgba(0,0,0,0.5);
+	box-shadow: 1px 1px 17px 0px rgba(0,0,0,0.5)
+}
+
+.page-footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  color: white;
+  background-color: black;
+  text-align: center;
+  font-family: 'Crimson Text', serif;
+  font-size: 15px;
+}
 </style>
 
 
@@ -188,7 +213,7 @@ li {
 
 <div class="container" id="outer" >
 	<div id="small-talk">
-		<h3>Small Talk.</h3>
+		<h2>Small Talk.</h2>
 	</div>
 	<div class="container-fluid col-sm-4" id="user-list"  >
 		<div class="container-fluid" style="" id="myname"></div>
@@ -199,7 +224,7 @@ li {
 	</div>
 	<div class="container col-sm-8" id="message-box" style="">
 		<input class="container-fluid well well-sm" id="to-user" placeholder="Whom do you want to send?" style="" autocomplete="on"/>
-			<div id="pm" class="container-fluid" style="">
+			<div id="pm" class="container-fluid shadow" style="">
 
 			</div>
 		<div class="input-group col-sm-12" id="submit-box">
@@ -215,4 +240,19 @@ li {
 
 </div>
 </body>
+<footer class="page-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col l6 s12">
+        <h3 class="white-text">Small Talk.</h3>
+        <p class="grey-text text-lighten-4">A simple messaging / Live Chat application.</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright">
+    <div class="container">
+    <a class="grey-text text-lighten-4 right" href="https://github.com/vasthav/chat-app">Fork on Github.</a>
+    </div>
+  </div>
+</footer>
 </html>
