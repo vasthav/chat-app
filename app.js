@@ -34,9 +34,9 @@ io.sockets.on('connection', function (socket) {
     // onlineClients[username] = socket.id;
     onlineClients[username] = socket.id;
     // echo to client they've connected
-    socket.emit('updatechat', 'SERVER : ', username+' \n');
+    // socket.emit('updatechat', 'SERVER : ', username+' \n');
     // echo globally (all clients) that a person has connected
-    socket.broadcast.emit('updatechat', 'SERVER : ', username + ' has connected\n');
+    // socket.broadcast.emit('updatechat', 'SERVER : ', username + ' has connected\n');
     // update the list of users in chat, client-side
     io.sockets.emit('updateusers', usernames);
   });

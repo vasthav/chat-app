@@ -5,17 +5,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script> -->
+
 <!-- Adding bootstrap -->
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<!-- Optional theme -->
+<!-- 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
+
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!-- End Bootstrap -->
 
-<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+
 
 <script type="text/javascript">
 	var socket = io.connect('http://localhost:8080');
@@ -26,26 +29,21 @@
 		$('#myname').append('@'+ myname);
 	});
 
-	socket.on('updatechat', function(username,data){
-		$('#conversation').append('<b class="container-fluid">'+username+' : '+data+'<br><br>');
+	socket.on('updatechat', function(key, data){
+		$('#conversation').append('<span class="container-fluid " id="msg-text"><b>'+username+' : '+data+'<br></span>');
 	});
-
+// <span class="container-fluid" style="color: white;">Connected Users.</span>
 	 socket.on('privatechat', function(uname, data){
-	 	// $('#pm').append('<b>'+uname+' : '+data+'<br>');
-	 	var userTag = '#USER-'+uname;
-	 	$(userTag).append('<b>'+uname+' : '+data+'<br>');
-	 	
+	 	$('#pm').append('<div class="container left" id="msg-text"><strong>'+uname+' : </strong>'+data+'</div><br>');	
+	 	// $('#pm').append('<span id="msg-text"><b>'+username+' : '+data+'<br></span>');
 	});
 
 	socket.on('updateusers', function(data) {
 		$('#users').empty();
 		$.each(data, function(key, value) {
-		$('#users').append('<li class="list-group-item"><a data-toggle="tab" href="#USER-'+key+'">'+key+'</li>');
-		$('#pm').append('<div id="USER-'+key+'" class="tab-pane fade"></div>');
+		$('#users').append('<li class="list-group-item">'+key+'</li>');
 		});
 	});
-
-	// <li><a data-toggle="tab" href="@"+key>Menu 1</a></li>
 
 	$(function() {
 		$('#datasend').click(function() {
@@ -67,7 +65,8 @@
 			$('#to-user').val('');
 			$('#pdata').val('');
 			socket.emit('privatemsg', uname, pdata);
-			$('#pm').append('<b>'+myname+' : '+pdata+'<br>');
+			// $('#pm').append('<b>'+myname+' : '+pdata+'<br>');
+			$('#pm').append('<div class="container right" id="msg-text-me"><strong>'+myname+' : </strong>'+pdata+'</div><br>');	
 		});
 
 		$('#pdata').keypress(function(e){
@@ -83,7 +82,7 @@
 <style type="text/css">
 body {
 	/*background-image: url('bg-img.jpg');*/
-	background-color: #F0F0F0;
+	background-color: #F0F0FF;
 }
 #user-list{
 	background-color: #00c46c;
@@ -104,16 +103,19 @@ body {
 #connected-users{
 /*	height: 370px;
 	overflow-y: scroll;*/
+	overflow: hidden;
 }
-
+#users{
+	overflow: auto;
+}
 #user-list{
-	overflow:scroll-y;
+	overflow:auto;
 }
 
 #pm{
 	background-color: white;
 	height: 78%;
-	overflow:scroll-y;
+	overflow:auto;
 /*	margin-top: 3px;
 	margin-bottom: 3px;*/
 	border-radius: 10px;
@@ -124,6 +126,7 @@ body {
 	/*width:300px;*/
 	height: 480px;
 	border-radius: 10px;
+	overflow:hidden;
 }
 
 #to-user{
@@ -147,37 +150,57 @@ body {
 	padding: 10px;
 }
 
+li {
+	color: white;
+}
+#msg-text{
+	margin:5px;
+	color: white;
+	background-color: #0097a7;
+	word-wrap: break-word;
+	width: 80%;
+	border-radius: 10px;
+}
+
+#msg-text-me{
+	margin:5px;
+	color: white;
+	background-color: #00BCD4;
+	word-wrap: break-word;
+	width: 80%;
+	border-radius: 10px;
+}
+.right {
+    float: right;
+    width: 300px;
+    padding: 8px;
+}
+.left {
+    float: left;
+    width: 300px;
+    padding: 8px;
+}
 </style>
 
 
 </head>
 <body style="">
 
-
-<!-- <div class="container" id="outer" style="background-color:black"> -->
 <div class="container" id="outer" >
 	<div id="small-talk">
 		<h3>Small Talk.</h3>
 	</div>
-<!-- 	<div class="container-fluid col-sm-4" id="user-list"  >
+	<div class="container-fluid col-sm-4" id="user-list"  >
 		<div class="container-fluid" style="" id="myname"></div>
-		<span class="container-fluid" style="" >Connected Users.</span>
+		<div><span class="container-fluid" style="color: white;">Connected Users.</span></div>
 		<div id="connected-users" class="container-fluid" >
 		<ul id="users" class="list-group" width="250px" ></ul>
 		</div>
-	</div> -->
-
-	<div class="container-fluid col-sm-4" id="user-list"  >
-		<div class="container-fluid" style="" id="myname"></div>
-		<span class="container-fluid" style="" >Connected Users.</span>
-		<div id="connected-users" class="container-fluid" >
-		<ul id="users" class="nav nav-tabs-horizontal" width="250px" ></ul>
-		</div>
 	</div>
-
 	<div class="container col-sm-8" id="message-box" style="">
 		<input class="container-fluid well well-sm" id="to-user" placeholder="Whom do you want to send?" style="" autocomplete="on"/>
-			<div id="pm" class="container-fluid tab-content" style="">
+			<div id="pm" class="container-fluid" style="">
+
 			</div>
 		<div class="input-group col-sm-12" id="submit-box">
 		      <input type="text" class="form-control" id="pdata" placeholder="Type your message here...">
@@ -185,8 +208,10 @@ body {
 		      <button class="btn btn-default" id="pmsend" type="button">Send</button>
 		      </span>
 		</div>
-
 	</div>
+
+
+</div>
 
 </div>
 </body>
