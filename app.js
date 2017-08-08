@@ -6,6 +6,8 @@ var express = require('express')
   , server = http.createServer(app)
   , io = require('socket.io').listen(server);
 
+// var router      =   express.Router();
+
 server.listen(8080);
 console.log("Server running ... ");
 // routing
@@ -16,8 +18,10 @@ app.get('/', function (req, res) {
 // usernames which are currently connected to the chat
 var usernames = {};
 var onlineClients = {};
+var agents = {};
 
-io.sockets.on('connection', function (socket) {
+// io.sockets.on('connection', function (socket) {
+io.on('connection', function (socket) {
 
   // when the client emits 'sendchat', this listens and executes
   socket.on('sendchat', function (data) {
@@ -57,4 +61,5 @@ io.sockets.on('connection', function (socket) {
     // echo globally that this client has left
     // socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
   });
+
 });

@@ -1,3 +1,4 @@
+<!-- Small Talk. by vasthav -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,10 +10,6 @@
 <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script> -->
 
 <!-- Adding bootstrap -->
-<!-- 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
-
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -20,10 +17,10 @@
 	  <link href="https://fonts.googleapis.com/css?family=Crimson+Text" rel="stylesheet">
 <!-- End Bootstrap -->
 
-
-
+<!-- Adding JavaScript -->
 <script type="text/javascript">
-	var socket = io.connect('http://localhost:8080');
+	// var socket = io.connect('http://localhost:8080');
+	var socket = io.connect('http://b7765966.ngrok.io');
 	var myname = '';
 	socket.on('connect', function(){
 		myname = prompt('Whats your name?')
@@ -31,15 +28,16 @@
 		$('#myname').append('@'+ myname);
 	});
 
-	socket.on('updatechat', function(key, data){
+	socket.on('updatechat', function(key, data) {
 		$('#conversation').append('<span class="container-fluid " id="msg-text"><b>'+username+' : '+data+'<br></span>');
 	});
-// <span class="container-fluid" style="color: white;">Connected Users.</span>
-	 socket.on('privatechat', function(uname, data){
+
+	socket.on('privatechat', function(uname, data) {
 	 	$('#pm').append('<div class="container left" id="msg-text"><strong>'+uname+' : </strong>'+data+'</div><br>');	
 	 	// $('#pm').append('<span id="msg-text"><b>'+username+' : '+data+'<br></span>');
 	});
 
+	// event Listner for Updating User List
 	socket.on('updateusers', function(data) {
 		$('#users').empty();
 		$.each(data, function(key, value) {
@@ -67,11 +65,10 @@
 			$('#to-user').val('');
 			$('#pdata').val('');
 			socket.emit('privatemsg', uname, pdata);
-			// $('#pm').append('<b>'+myname+' : '+pdata+'<br>');
 			$('#pm').append('<div class="container right" id="msg-text-me"><strong>'+myname+' : </strong>'+pdata+'</div><br>');	
 		});
 
-		$('#pdata').keypress(function(e){
+		$('#pdata').keypress(function(e) {
 			if(e.which==13) {
 				$(this).blur();
 				$('#pmsend').focus().click();
@@ -80,10 +77,13 @@
 	});
 
 </script>
-<link rel="stylesheet" type="text/css" href="style.css">
+<!-- End JavaScript -->
+
+<!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+
+<!-- Adding CSS style -->
 <style type="text/css">
 body {
-	background-image: url("bg-img.jpg");
 	background-color: #0d3d56;
 }
 #user-list{
@@ -103,8 +103,7 @@ body {
 }
 
 #connected-users{
-/*	height: 370px;
-	overflow-y: scroll;*/
+
 	overflow: hidden;
 }
 #users{
@@ -118,14 +117,10 @@ body {
 	background-color: white;
 	height: 78%;
 	overflow:auto;
-/*	margin-top: 3px;
-	margin-bottom: 3px;*/
 	border-radius: 10px;
 }
 
 #message-box{
-	/*background-color: blue;*/
-	/*width:300px;*/
 	height: 480px;
 	border-radius: 10px;
 	overflow:hidden;
@@ -138,9 +133,6 @@ body {
 #submit-box{
 	margin-top: 10px;
 }
-/*#pdata{
-	width: 93%;
-}*/
 #small-talk{
 	margin: 10px;
 	color: white;
@@ -206,7 +198,7 @@ li {
   font-size: 15px;
 }
 </style>
-
+<!-- End CSS Style -->
 
 </head>
 <body style="">
@@ -215,6 +207,7 @@ li {
 	<div id="small-talk">
 		<h2>Small Talk.</h2>
 	</div>
+	<!-- User List Box -->
 	<div class="container-fluid col-sm-4" id="user-list"  >
 		<div class="container-fluid" style="" id="myname"></div>
 		<div><span class="container-fluid" style="color: white;">Connected Users.</span></div>
@@ -222,11 +215,15 @@ li {
 		<ul id="users" class="list-group" width="250px" ></ul>
 		</div>
 	</div>
+	<!-- MessageBox -->
 	<div class="container col-sm-8" id="message-box" style="">
+	<!-- To Address input Group -->
 		<input class="container-fluid well well-sm" id="to-user" placeholder="Whom do you want to send?" style="" autocomplete="on"/>
+			<!-- Chat window -->
 			<div id="pm" class="container-fluid shadow" style="">
-
+			<!-- Dynamically Generate messages. -->
 			</div>
+		<!-- Submit button group -->
 		<div class="input-group col-sm-12" id="submit-box">
 		      <input type="text" class="form-control" id="pdata" placeholder="Type your message here...">
 		      <span class="input-group-btn">
@@ -234,12 +231,11 @@ li {
 		      </span>
 		</div>
 	</div>
-
-
 </div>
 
 </div>
 </body>
+<!-- Adding Footer -->
 <footer class="page-footer">
   <div class="container">
     <div class="row">
@@ -255,4 +251,5 @@ li {
     </div>
   </div>
 </footer>
+<!-- End Footer -->
 </html>
