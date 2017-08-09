@@ -51,6 +51,7 @@ io.on('connection', function (socket) {
     var id = onlineClients[to];
     // io.sockets.socket(id).emit('privatechat', socket.username, message);
   	socket.to(id).emit('privatechat', socket.username, message);
+    console.log('INSIDE PRIVATECHAT => id : '+id+' --> from username : '+socket.username+' to '+to);
   });
 
   // when the user disconnects.. perform this
