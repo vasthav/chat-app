@@ -22,7 +22,7 @@ var agents = {};
 
 // io.sockets.on('connection', function (socket) {
 io.on('connection', function (socket) {
-
+  console.log('user connected...');
   // when the client emits 'sendchat', this listens and executes
   socket.on('sendchat', function (data) {
     // we tell the client to execute 'updatechat' with 2 parameters
@@ -31,6 +31,7 @@ io.on('connection', function (socket) {
 
   // when the client emits 'adduser', this listens and executes
   socket.on('adduser', function(username){
+    console.log('user : ' + username);
     // we store the username in the socket session for this client
     socket.username = username;
     // add the client's username to the global list
