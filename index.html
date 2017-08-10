@@ -20,7 +20,7 @@
 <!-- Adding JavaScript -->
 <script type="text/javascript">
 	// var socket = io.connect('http://localhost:8080');
-	var socket = io.connect('https://fd2d814f.ngrok.io');
+	var socket = io.connect('https://d377562f.ngrok.io');
 	var myname = '';
 	socket.on('connect', function(){
 		myname = prompt('Whats your name?')
@@ -34,6 +34,7 @@
 
 	socket.on('privatechat', function(uname, data) {
 	 	$('#pm').append('<div class="container left" id="msg-text"><strong>'+uname+' : </strong>'+data+'</div><br>');
+	 	$("#pm").scrollTop($("#pm")[0].scrollHeight);
 	 	// $('#pm').append('<span id="msg-text"><b>'+username+' : '+data+'<br></span>');
 	});
 
@@ -66,6 +67,7 @@
 			$('#pdata').val('');
 			socket.emit('privatemsg', uname, pdata);
 			$('#pm').append('<div class="container right" id="msg-text-me"><strong>'+myname+' : </strong>'+pdata+'</div><br>');
+			$("#pm").scrollTop($("#pm")[0].scrollHeight);
 		});
 
 		$('#pdata').keypress(function(e) {
