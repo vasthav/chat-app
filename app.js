@@ -1,17 +1,17 @@
 // source : https://github.com/mmukhin/psitsmike_example_1/blob/master/app.js
 
-var express = require('express')
-  , app = express()
-  , http = require('http')
-  , server = http.createServer(app)
-  , io = require('socket.io').listen(server);
+var express = require('express'),
+  app = express(),
+  http = require('http'),
+  server = http.createServer(app),
+  io = require('socket.io').listen(server);
 
 // var router      =   express.Router();
 
 server.listen(8080);
 console.log("Server running ... ");
 // routing
-app.get('/', function (req, res) {
+app.get('/', function(req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
@@ -21,16 +21,16 @@ var onlineClients = {};
 var agents = {};
 
 // io.sockets.on('connection', function (socket) {
-io.on('connection', function (socket) {
+io.on('connection', function(socket) {
   console.log('user connected...');
   // when the client emits 'sendchat', this listens and executes
-  socket.on('sendchat', function (data) {
+  socket.on('sendchat', function(data) {
     // we tell the client to execute 'updatechat' with 2 parameters
     io.sockets.emit('updatechat', socket.username, data);
   });
 
   // when the client emits 'adduser', this listens and executes
-  socket.on('adduser', function(username){
+  socket.on('adduser', function(username) {
     console.log('user : ' + username);
     // we store the username in the socket session for this client
     socket.username = username;
@@ -50,12 +50,12 @@ io.on('connection', function (socket) {
   socket.on('privatemsg', function(to, message) {
     var id = onlineClients[to];
     // io.sockets.socket(id).emit('privatechat', socket.username, message);
-  	socket.to(id).emit('privatechat', socket.username, message);
-    console.log('INSIDE PRIVATECHAT => id : '+id+' --> from username : '+socket.username+' to '+to);
+    socket.to(id).emit('privatechat', socket.username, message);
+    console.log('INSIDE PRIVATECHAT => id : ' + id + ' --> from username : ' + socket.username + ' to ' + to);
   });
 
   // when the user disconnects.. perform this
-  socket.on('disconnect', function(){
+  socket.on('disconnect', function() {
     // remove the username from global usernames list
     delete usernames[socket.username];
     // update list of users in chat, client-side

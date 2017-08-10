@@ -20,7 +20,7 @@
 <!-- Adding JavaScript -->
 <script type="text/javascript">
 	// var socket = io.connect('http://localhost:8080');
-	var socket = io.connect('https://cabb63e6.ngrok.io');
+	var socket = io.connect('https://fd2d814f.ngrok.io');
 	var myname = '';
 	socket.on('connect', function(){
 		myname = prompt('Whats your name?')
@@ -33,7 +33,7 @@
 	});
 
 	socket.on('privatechat', function(uname, data) {
-	 	$('#pm').append('<div class="container left" id="msg-text"><strong>'+uname+' : </strong>'+data+'</div><br>');	
+	 	$('#pm').append('<div class="container left" id="msg-text"><strong>'+uname+' : </strong>'+data+'</div><br>');
 	 	// $('#pm').append('<span id="msg-text"><b>'+username+' : '+data+'<br></span>');
 	});
 
@@ -65,7 +65,7 @@
 			$('#to-user').val('');
 			$('#pdata').val('');
 			socket.emit('privatemsg', uname, pdata);
-			$('#pm').append('<div class="container right" id="msg-text-me"><strong>'+myname+' : </strong>'+pdata+'</div><br>');	
+			$('#pm').append('<div class="container right" id="msg-text-me"><strong>'+myname+' : </strong>'+pdata+'</div><br>');
 		});
 
 		$('#pdata').keypress(function(e) {
@@ -138,7 +138,7 @@ body {
 	color: white;
 	padding: 5px;
 	font-size: 30px;
-	font-family: 'Pacifico', cursive;	
+	font-family: 'Pacifico', cursive;
 }
 #myname{
 	font-size: 1.5em;
